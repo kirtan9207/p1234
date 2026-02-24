@@ -1,0 +1,98 @@
+# VHCCS — Product Requirements Document
+
+## Original Problem Statement
+Verified Human Content Certification System (VHCCS): An open-source framework to authenticate text content and issue "Verified Human Created" badges using AI detection, stylometry, cryptographic signing, and trust-based moderation workflows.
+
+## Architecture
+- **Backend**: FastAPI + MongoDB (via Motor async driver)
+- **Frontend**: React + Tailwind CSS + shadcn/ui components
+- **Auth**: JWT tokens (HS256), bcrypt password hashing
+- **Certificates**: SHA-256 content hash + HMAC-SHA256 signature + unique verification IDs (VH-YYYY-XXXXXX)
+- **AI Detection**: MOCKED (text heuristics-based scoring — production would use HuggingFace transformers)
+- **Stylometry**: MOCKED (word count, vocab richness, sentence patterns)
+
+## User Personas
+1. **Content Creator** — submits articles/text, views trust score, gets certified, generates badge embed code
+2. **Reviewer** — moderates pending/flagged submissions, approves/rejects with notes
+3. **Admin** — full access to both creator and reviewer features, can revoke certificates
+
+## Core Requirements (Static)
+- JWT authentication with 3 roles: creator, reviewer, admin
+- Content submission with AI detection + stylometry analysis
+- Trust score engine (0-100, starts at 50): +10 approved, -20 rejected, -50 fraud, +5 identity verified
+- High trust (80+) → auto-approval path; Medium/Low → manual moderation queue
+- Certificate issuance: SHA-256 hash + HMAC signature + verification ID
+- Public verification registry with search
+- Badge embed code generation
+- Certificate revocation system
+
+## What's Been Implemented (Feb 2026)
+### Backend (/app/backend/server.py)
+- POST /api/auth/register, POST /api/auth/login, GET /api/auth/me
+- POST /api/submissions, GET /api/submissions, GET /api/submissions/{id}
+- GET /api/moderation/queue, GET /api/moderation/stats, POST /api/moderation/{sid}/review
+- GET /api/certificates/{id}, GET /api/verify/{vid}
+- GET /api/registry, GET /api/registry/stats
+- GET /api/dashboard/stats
+- GET /api/admin/users, POST /api/admin/revoke/{cid}
+- GET /api/creators/{uid}/profile
+- POST /api/seed (demo data)
+- Trust score engine, certificate issuance with SHA-256 + HMAC signing
+- MongoDB indexes for performance
+
+### Frontend (/app/frontend/src/)
+- LandingPage.js — Hero, stats, how-it-works, features, CTA
+- AuthPage.js — Login/Register with demo account buttons
+- CreatorDashboard.js — Overview stats, Submit form with AI/stylometry results, History table, Badge Generator
+- ReviewerPanel.js — Moderation queue table, detailed Review Modal with approve/reject
+- PublicRegistry.js — Searchable certificate grid with pagination
+- CertificatePage.js — Public certificate verification with hash/signature display + embed code
+- Navbar.js — Responsive nav with role-based links, user dropdown
+- AuthContext.js — JWT auth state management with axios interceptors
+
+## Demo Accounts
+- admin@vhccs.com / admin123 (trust: 100, auto-approves)
+- reviewer@vhccs.com / review123 (reviewer role)
+- creator@vhccs.com / creator123 (trust: 50, pending review)
+
+## Test Results (Feb 2026)
+- Backend: 100% pass (18/18 tests)
+- Frontend: 100% pass (all flows)
+
+## Prioritized Backlog
+
+### P0 (Critical - Must Have)
+- [x] JWT Authentication
+- [x] Content submission + AI/stylometry analysis
+- [x] Trust score engine
+- [x] Certificate issuance (SHA-256 + HMAC)
+- [x] Public verification registry
+- [x] Reviewer moderation panel
+- [x] Badge embed code
+
+### P1 (Important - Next Phase)
+- [ ] Real HuggingFace AI detection (RoBERTa/DeBERTa models)
+- [ ] Real spaCy stylometry analysis
+- [ ] Plagiarism/similarity detection (TF-IDF cosine similarity)
+- [ ] Creator identity verification workflow
+- [ ] Email notifications (Resend) for submission status
+- [ ] Admin user management dashboard with ban/suspend
+- [ ] PDF certificate generation
+- [ ] API key system for third-party badge validation
+
+### P2 (Nice to Have)
+- [ ] Creator profile pages (public)
+- [ ] Content URL fetching (auto-extract text from URLs)
+- [ ] Dashboard analytics charts (Recharts)
+- [ ] Fraud report system (community flagging)
+- [ ] Redis caching for trust scores
+- [ ] Batch submission support
+- [ ] Webhook notifications for status changes
+- [ ] Dark mode
+
+## Next Tasks
+1. Integrate real HuggingFace AI detection model
+2. Add email notifications for submission status changes
+3. Build admin user management interface
+4. Add PDF certificate download
+5. Implement API key system for third-party validation
