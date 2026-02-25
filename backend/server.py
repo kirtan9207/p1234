@@ -28,6 +28,10 @@ JWT_SECRET = os.environ.get('JWT_SECRET_KEY', 'vhccs-dev-secret-2026-change-in-p
 JWT_ALGORITHM = 'HS256'
 HMAC_SECRET = os.environ.get('HMAC_SECRET_KEY', 'vhccs-hmac-dev-2026-change-in-prod')
 HIGH_TRUST_THRESHOLD = 80
+HF_API_URL = "https://api-inference.huggingface.co/models/roberta-base-openai-detector"
+HF_TOKEN = os.environ.get('HF_API_TOKEN', '')
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
+resend.api_key = os.environ.get('RESEND_API_KEY', '')
 
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
