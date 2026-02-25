@@ -30,24 +30,31 @@ Verified Human Content Certification System (VHCCS): An open-source framework to
 ### Backend (/app/backend/server.py)
 - POST /api/auth/register, POST /api/auth/login, GET /api/auth/me
 - POST /api/submissions, GET /api/submissions, GET /api/submissions/{id}
-- GET /api/moderation/queue, GET /api/moderation/stats, POST /api/moderation/{sid}/review
-- GET /api/certificates/{id}, GET /api/verify/{vid}
+- GET /api/moderation/queue, GET /api/moderation/stats, POST /api/moderation/{sid}/review (with Resend email notifications)
+- GET /api/certificates/{id}, GET /api/certificates/{id}/pdf (PDF download - reportlab)
+- GET /api/verify/{vid}
 - GET /api/registry, GET /api/registry/stats
 - GET /api/dashboard/stats
-- GET /api/admin/users, POST /api/admin/revoke/{cid}
+- GET /api/admin/users, POST /api/admin/users/{uid}/status, PUT /api/admin/users/{uid}/trust
+- GET /api/admin/stats, POST /api/admin/revoke/{cid}
+- POST /api/apikeys, GET /api/apikeys, DELETE /api/apikeys/{key_id}
+- GET /api/v1/verify/{vid} (third-party API key validation)
 - GET /api/creators/{uid}/profile
 - POST /api/seed (demo data)
+- Real HuggingFace AI detection (roberta-base-openai-detector) with mock fallback
 - Trust score engine, certificate issuance with SHA-256 + HMAC signing
+- Resend email notifications for submission status changes
 - MongoDB indexes for performance
 
 ### Frontend (/app/frontend/src/)
 - LandingPage.js — Hero, stats, how-it-works, features, CTA
 - AuthPage.js — Login/Register with demo account buttons
-- CreatorDashboard.js — Overview stats, Submit form with AI/stylometry results, History table, Badge Generator
+- CreatorDashboard.js — Overview stats, Submit form with AI/stylometry results, History table, Badge Generator, API Keys tab
 - ReviewerPanel.js — Moderation queue table, detailed Review Modal with approve/reject
+- AdminPanel.js — User management (ban/suspend/activate), trust score editor, system overview stats
 - PublicRegistry.js — Searchable certificate grid with pagination
-- CertificatePage.js — Public certificate verification with hash/signature display + embed code
-- Navbar.js — Responsive nav with role-based links, user dropdown
+- CertificatePage.js — Public certificate verification with hash/signature display + embed code + PDF download
+- Navbar.js — Responsive nav with role-based links (Admin link for admin only), user dropdown
 - AuthContext.js — JWT auth state management with axios interceptors
 
 ## Demo Accounts
