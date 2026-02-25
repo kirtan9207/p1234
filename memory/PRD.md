@@ -78,14 +78,14 @@ Verified Human Content Certification System (VHCCS): An open-source framework to
 - [x] Badge embed code
 
 ### P1 (Important - Next Phase)
-- [ ] Real HuggingFace AI detection (RoBERTa/DeBERTa models)
+- [x] Real HuggingFace AI detection (roberta-base-openai-detector with mock fallback)
+- [x] Email notifications (Resend) for submission approve/reject/revision
+- [x] Admin user management panel (ban/suspend/activate, trust score editing)
+- [x] PDF certificate download (reportlab)
+- [x] API key system for third-party badge validation (/api/v1/verify)
 - [ ] Real spaCy stylometry analysis
 - [ ] Plagiarism/similarity detection (TF-IDF cosine similarity)
 - [ ] Creator identity verification workflow
-- [ ] Email notifications (Resend) for submission status
-- [ ] Admin user management dashboard with ban/suspend
-- [ ] PDF certificate generation
-- [ ] API key system for third-party badge validation
 
 ### P2 (Nice to Have)
 - [ ] Creator profile pages (public)
