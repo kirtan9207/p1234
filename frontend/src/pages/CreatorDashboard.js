@@ -295,8 +295,7 @@ export default function CreatorDashboard() {
             )}
 
             {/* Badge Generator Tab */}
-            {tab === 'badge' && (
-              <div>
+            {tab === 'badge' && (              <div>
                 <h3 className="font-semibold text-slate-800 mb-4">Badge Generator</h3>
                 {approvedSubs.length === 0 ? (
                   <div className="text-center py-12 text-slate-400">
