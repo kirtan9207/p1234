@@ -113,9 +113,9 @@ export default function AuthPage() {
               <p className="text-xs text-slate-400 text-center mb-3">Demo Accounts</p>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { label: 'Creator', email: 'creator@trustink.com', pw: 'creator123' },
-                  { label: 'Reviewer', email: 'reviewer@trustink.com', pw: 'review123' },
-                  { label: 'Admin', email: 'admin@trustink.com', pw: 'admin123' },
+                  { label: 'Creator', email: 'creator@vhccs.com', pw: 'creator123' },
+                  { label: 'Reviewer', email: 'reviewer@vhccs.com', pw: 'review123' },
+                  { label: 'Admin', email: 'admin@vhccs.com', pw: 'admin123' },
                 ].map(d => (
                   <button key={d.label} onClick={() => fillDemo(d.email, d.pw)}
                     className="text-xs py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors"
