@@ -328,7 +328,7 @@ def build_cert_pdf(cert: dict) -> bytes:
     tbl = Table(data, colWidths=[1.8*inch, 5.0*inch])
     tbl.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, -1), HexColor('#f1f5f9')),
-        ('TEXTCOLOR', (0, 0), (0, -1), indigo),
+        ('TEXTCOLOR', (0, 0), (0, -1), HexColor('#111827')),
         ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
         ('FONTSIZE', (0, 0), (-1, -1), 9),
         ('PADDING', (0, 0), (-1, -1), 8),
