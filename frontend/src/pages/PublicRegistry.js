@@ -47,8 +47,8 @@ export default function PublicRegistry() {
       <div className="bg-white border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-4 py-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
-              <Globe className="w-5 h-5 text-indigo-600" />
+            <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+              <Globe className="w-5 h-5 text-gray-900" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Public Verification Registry</h1>
@@ -60,8 +60,8 @@ export default function PublicRegistry() {
             <div className="flex flex-wrap gap-6 mt-4 text-sm">
               {[
                 { label: 'Active Certificates', value: stats.total_certificates, color: 'text-emerald-600' },
-                { label: 'Registered Creators', value: stats.total_creators, color: 'text-indigo-600' },
-                { label: 'Total Submissions', value: stats.total_submissions, color: 'text-violet-600' },
+                { label: 'Registered Creators', value: stats.total_creators, color: 'text-gray-900' },
+                { label: 'Total Submissions', value: stats.total_submissions, color: 'text-gray-700' },
                 { label: 'Revoked', value: stats.revoked, color: 'text-rose-500' },
               ].map((s, i) => (
                 <div key={i} className="flex items-center gap-1.5">
@@ -78,9 +78,9 @@ export default function PublicRegistry() {
               <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
               <input value={search} onChange={e => setSearch(e.target.value)}
                 placeholder="Search by title or creator name..." data-testid="registry-search"
-                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all" />
+                className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all" />
             </div>
-            <button type="submit" className="px-5 py-3 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors" data-testid="search-button">
+            <button type="submit" className="px-5 py-3 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-black transition-colors" data-testid="search-button">
               Search
             </button>
             {query && (
@@ -97,7 +97,7 @@ export default function PublicRegistry() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {loading ? (
           <div className="flex h-48 items-center justify-center">
-            <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" />
+            <div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full" />
           </div>
         ) : certs.length === 0 ? (
           <div className="text-center py-16 text-slate-400">
@@ -124,7 +124,7 @@ export default function PublicRegistry() {
                     <p className="text-xs text-slate-400">{new Date(cert.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</p>
                   </div>
                   <Link to={`/verify/${cert.verification_id}`}
-                    className="mt-4 flex items-center justify-center gap-2 w-full py-2 bg-indigo-50 text-indigo-600 text-xs font-medium rounded-xl hover:bg-indigo-100 transition-colors"
+                    className="mt-4 flex items-center justify-center gap-2 w-full py-2 bg-gray-50 text-gray-900 text-xs font-medium rounded-xl hover:bg-gray-100 transition-colors"
                     data-testid="view-certificate-link">
                     View Certificate <ExternalLink className="w-3 h-3" />
                   </Link>

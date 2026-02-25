@@ -36,13 +36,13 @@ export default function AuthPage() {
   const fillDemo = (email, password) => setForm(f => ({ ...f, email, password }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-indigo-600 rounded-2xl mb-4">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-gray-900 rounded-2xl mb-4">
             <Shield className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">VHCCS Platform</h1>
+          <h1 className="text-2xl font-bold text-slate-900">TrustInk Platform</h1>
           <p className="text-slate-500 text-sm mt-1">Human Content Certification System</p>
         </div>
 
@@ -50,7 +50,7 @@ export default function AuthPage() {
           <div className="flex border-b border-slate-100">
             {['login', 'register'].map(t => (
               <button key={t} onClick={() => setTab(t)}
-                className={`flex-1 py-4 text-sm font-medium transition-colors capitalize ${tab === t ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex-1 py-4 text-sm font-medium transition-colors capitalize ${tab === t ? 'text-gray-900 border-b-2 border-gray-900 bg-gray-50/50' : 'text-slate-500 hover:text-slate-700'}`}
                 data-testid={`tab-${t}`}
               >
                 {t === 'login' ? 'Sign In' : 'Create Account'}
@@ -64,7 +64,7 @@ export default function AuthPage() {
                 <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Full Name</label>
                 <input name="name" value={form.name} onChange={handleChange} required
                   placeholder="John Doe" data-testid="name-input"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all" />
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all" />
               </div>
             )}
 
@@ -72,7 +72,7 @@ export default function AuthPage() {
               <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Email</label>
               <input name="email" type="email" value={form.email} onChange={handleChange} required
                 placeholder="you@example.com" data-testid="email-input"
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all" />
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all" />
             </div>
 
             <div>
@@ -80,7 +80,7 @@ export default function AuthPage() {
               <div className="relative">
                 <input name="password" type={showPass ? 'text' : 'password'} value={form.password} onChange={handleChange} required
                   placeholder="••••••••" data-testid="password-input"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all pr-12" />
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all pr-12" />
                 <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-3 text-slate-400 hover:text-slate-600">
                   {showPass ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -92,7 +92,7 @@ export default function AuthPage() {
                 <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Account Type</label>
                 <select name="role" value={form.role} onChange={handleChange}
                   data-testid="role-select"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-all bg-white">
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-all bg-white">
                   <option value="creator">Content Creator</option>
                   <option value="reviewer">Content Reviewer</option>
                   <option value="admin">Administrator</option>
@@ -101,7 +101,7 @@ export default function AuthPage() {
             )}
 
             <button type="submit" disabled={loading} data-testid="auth-submit-button"
-              className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-2">
+              className="w-full py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-2">
               {loading ? 'Please wait...' : tab === 'login' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
@@ -111,9 +111,9 @@ export default function AuthPage() {
               <p className="text-xs text-slate-400 text-center mb-3">Demo Accounts</p>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { label: 'Creator', email: 'creator@vhccs.com', pw: 'creator123' },
-                  { label: 'Reviewer', email: 'reviewer@vhccs.com', pw: 'review123' },
-                  { label: 'Admin', email: 'admin@vhccs.com', pw: 'admin123' },
+                  { label: 'Creator', email: 'creator@trustink.com', pw: 'creator123' },
+                  { label: 'Reviewer', email: 'reviewer@trustink.com', pw: 'review123' },
+                  { label: 'Admin', email: 'admin@trustink.com', pw: 'admin123' },
                 ].map(d => (
                   <button key={d.label} onClick={() => fillDemo(d.email, d.pw)}
                     className="text-xs py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors"
@@ -129,7 +129,7 @@ export default function AuthPage() {
 
         <p className="text-center text-xs text-slate-400 mt-6">
           {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
-          <button onClick={() => setTab(tab === 'login' ? 'register' : 'login')} className="text-indigo-600 hover:underline font-medium">
+          <button onClick={() => setTab(tab === 'login' ? 'register' : 'login')} className="text-gray-900 hover:underline font-medium">
             {tab === 'login' ? 'Create one' : 'Sign in'}
           </button>
         </p>

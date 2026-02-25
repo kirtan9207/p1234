@@ -36,10 +36,10 @@ function TrustEditor({ user, onUpdate }) {
     <div className="flex items-center gap-2">
       <input type="number" min={0} max={100} value={score}
         onChange={e => setScore(e.target.value)}
-        className="w-16 px-2 py-1 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-300"
+        className="w-16 px-2 py-1 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300"
         data-testid={`trust-input-${user.id}`} />
       <button onClick={save} disabled={saving}
-        className="px-2 py-1 bg-indigo-600 text-white text-xs rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors">
+        className="px-2 py-1 bg-gray-900 text-white text-xs rounded-lg hover:bg-black disabled:opacity-50 transition-colors">
         {saving ? '...' : 'Set'}
       </button>
     </div>
@@ -88,7 +88,7 @@ export default function AdminPanel() {
 
   if (loading) return (
     <div className="flex h-64 items-center justify-center">
-      <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" />
+      <div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full" />
     </div>
   );
 
@@ -98,7 +98,7 @@ export default function AdminPanel() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <Settings className="w-7 h-7 text-indigo-600" /> Admin Panel
+              <Settings className="w-7 h-7 text-gray-900" /> Admin Panel
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">System administration and user management</p>
           </div>
@@ -111,11 +111,11 @@ export default function AdminPanel() {
         {stats && (
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             {[
-              { label: 'Total Users', value: stats.total_users, color: 'text-indigo-600', icon: Users },
+              { label: 'Total Users', value: stats.total_users, color: 'text-gray-900', icon: Users },
               { label: 'Certificates', value: stats.total_certificates, color: 'text-emerald-600', icon: Award },
               { label: 'Pending Review', value: stats.pending_review, color: 'text-amber-600', icon: FileText },
               { label: 'Suspended/Banned', value: (stats.suspended || 0) + (stats.banned || 0), color: 'text-rose-600', icon: Ban },
-              { label: 'Active API Keys', value: stats.api_keys_active, color: 'text-violet-600', icon: Key },
+              { label: 'Active API Keys', value: stats.api_keys_active, color: 'text-gray-700', icon: Key },
             ].map((s, i) => (
               <div key={i} className="bg-white rounded-xl p-4 border border-slate-100 card-hover">
                 <div className="flex items-center gap-2 mb-1">
@@ -133,7 +133,7 @@ export default function AdminPanel() {
           <div className="flex border-b border-slate-100">
             {tabs.map(t => (
               <button key={t.id} onClick={() => setActiveTab(t.id)}
-                className={`flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors ${activeTab === t.id ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors ${activeTab === t.id ? 'text-gray-900 border-b-2 border-gray-900 bg-gray-50/50' : 'text-slate-500 hover:text-slate-700'}`}
                 data-testid={`admin-tab-${t.id}`}>
                 <t.icon className="w-4 h-4" />{t.label}
               </button>
@@ -165,7 +165,7 @@ export default function AdminPanel() {
                         <tr key={u.id} className="hover:bg-slate-50 transition-colors">
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold text-sm flex-shrink-0">
+                              <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-900 font-bold text-sm flex-shrink-0">
                                 {u.name?.charAt(0).toUpperCase()}
                               </div>
                               <div>
@@ -175,7 +175,7 @@ export default function AdminPanel() {
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                            <span className="text-xs px-2 py-1 bg-indigo-50 text-indigo-700 rounded-full font-medium capitalize">{u.role}</span>
+                            <span className="text-xs px-2 py-1 bg-gray-50 text-gray-900 rounded-full font-medium capitalize">{u.role}</span>
                           </td>
                           <td className="px-4 py-3">
                             <span className={`text-xs px-2 py-1 rounded-full border font-medium ${statusColors[u.status] || statusColors.active}`}>
@@ -246,8 +246,8 @@ export default function AdminPanel() {
                     <h4 className="font-medium text-slate-700 mb-4 text-sm">User Breakdown</h4>
                     <div className="space-y-3">
                       {[
-                        { label: 'Creators', value: stats.creators, color: 'bg-indigo-500' },
-                        { label: 'Reviewers', value: stats.reviewers, color: 'bg-violet-500' },
+                        { label: 'Creators', value: stats.creators, color: 'bg-gray-500' },
+                        { label: 'Reviewers', value: stats.reviewers, color: 'bg-gray-500' },
                         { label: 'Suspended', value: stats.suspended, color: 'bg-amber-500' },
                         { label: 'Banned', value: stats.banned, color: 'bg-rose-500' },
                       ].map((s, i) => (

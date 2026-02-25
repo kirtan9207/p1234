@@ -4,8 +4,8 @@ import { api } from '../context/AuthContext';
 import { Shield, CheckCircle, FileText, Award, Users, Lock, Zap, Globe, ArrowRight, Star } from 'lucide-react';
 
 const features = [
-  { icon: Shield, title: 'AI Detection', desc: 'Advanced algorithms analyze writing patterns to distinguish human vs AI-generated content.', color: 'bg-indigo-50 text-indigo-600' },
-  { icon: FileText, title: 'Stylometry Analysis', desc: 'Deep linguistic fingerprinting examines vocabulary, sentence structure, and writing style.', color: 'bg-violet-50 text-violet-600' },
+  { icon: Shield, title: 'AI Detection', desc: 'Advanced algorithms analyze writing patterns to distinguish human vs AI-generated content.', color: 'bg-gray-50 text-gray-900' },
+  { icon: FileText, title: 'Stylometry Analysis', desc: 'Deep linguistic fingerprinting examines vocabulary, sentence structure, and writing style.', color: 'bg-gray-50 text-gray-700' },
   { icon: Lock, title: 'Cryptographic Signing', desc: 'SHA-256 content hashing and HMAC signatures ensure tamper-proof certificate authenticity.', color: 'bg-blue-50 text-blue-600' },
   { icon: Award, title: 'Digital Certificates', desc: 'Issue verifiable badges with unique IDs that can be embedded on any website or platform.', color: 'bg-emerald-50 text-emerald-600' },
   { icon: Users, title: 'Trust Score Engine', desc: 'Dynamic creator reputation scoring routes content through appropriate verification paths.', color: 'bg-amber-50 text-amber-600' },
@@ -29,9 +29,9 @@ export default function LandingPage() {
     <div className="min-h-screen bg-slate-50">
       {/* Hero */}
       <section className="relative overflow-hidden bg-white border-b border-slate-100">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-violet-50 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50 pointer-events-none" />
         <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-28 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-900 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
             <Zap className="w-4 h-4" />
             Open-Source Content Authentication
           </div>
@@ -44,7 +44,7 @@ export default function LandingPage() {
             maintain a public verification registry, and build trust with your audience.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-300">
-            <Link to="/auth" className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200">
+            <Link to="/auth" className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black transition-colors shadow-lg shadow-gray-200">
               Get Certified <ArrowRight className="w-4 h-4" />
             </Link>
             <Link to="/registry" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-700 font-semibold rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
@@ -54,7 +54,7 @@ export default function LandingPage() {
 
           {/* Badge preview */}
           <div className="mt-16 flex justify-center animate-fade-in-up delay-400">
-            <div className="animate-pulse-ring inline-flex items-center gap-3 px-6 py-3 bg-white rounded-2xl shadow-xl border border-indigo-100">
+            <div className="animate-pulse-ring inline-flex items-center gap-3 px-6 py-3 bg-white rounded-2xl shadow-xl border border-gray-100">
               <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-emerald-600" />
               </div>
@@ -72,7 +72,7 @@ export default function LandingPage() {
       </section>
 
       {/* Stats */}
-      <section className="bg-indigo-600 py-12">
+      <section className="bg-gray-900 py-12">
         <div className="max-w-5xl mx-auto px-4 grid grid-cols-3 gap-8 text-center">
           {[
             { label: 'Certificates Issued', value: stats.total_certificates },
@@ -81,7 +81,7 @@ export default function LandingPage() {
           ].map((s, i) => (
             <div key={i} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.1}s` }}>
               <div className="text-3xl sm:text-4xl font-bold text-white">{s.value.toLocaleString()}</div>
-              <div className="text-indigo-200 text-sm mt-1">{s.label}</div>
+              <div className="text-gray-400 text-sm mt-1">{s.label}</div>
             </div>
           ))}
         </div>
@@ -100,7 +100,7 @@ export default function LandingPage() {
                 {i < steps.length - 1 && (
                   <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-indigo-200 z-10" />
                 )}
-                <div className="text-5xl font-black text-indigo-100 mb-4">{s.num}</div>
+                <div className="text-5xl font-black text-gray-300 mb-4">{s.num}</div>
                 <h3 className="text-lg font-semibold text-slate-800 mb-2">{s.title}</h3>
                 <p className="text-sm text-slate-500">{s.desc}</p>
               </div>
@@ -131,12 +131,12 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-indigo-600 to-violet-600">
+      <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-700">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <Star className="w-12 h-12 text-yellow-300 mx-auto mb-4" />
           <h2 className="text-3xl font-bold text-white mb-4">Start Certifying Your Content Today</h2>
-          <p className="text-indigo-200 mb-8">Join creators and publishers building trust through verified human content.</p>
-          <Link to="/auth" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-700 font-bold rounded-xl hover:bg-indigo-50 transition-colors shadow-xl">
+          <p className="text-gray-400 mb-8">Join creators and publishers building trust through verified human content.</p>
+          <Link to="/auth" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 font-bold rounded-xl hover:bg-gray-50 transition-colors shadow-xl">
             Create Free Account <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -144,8 +144,8 @@ export default function LandingPage() {
 
       <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Shield className="w-4 h-4 text-indigo-400" />
-          <span className="text-white font-semibold">VHCCS</span>
+          <Shield className="w-4 h-4 text-gray-500" />
+          <span className="text-white font-semibold">TrustInk</span>
         </div>
         <p>Verified Human Content Certification System — Open Source</p>
       </footer>

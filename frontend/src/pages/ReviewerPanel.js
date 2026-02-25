@@ -89,7 +89,7 @@ function ReviewModal({ sub, onClose, onDecision }) {
             </div>
             <div className="bg-slate-50 rounded-xl p-4">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Stylometry</p>
-              <ScoreBar value={sub.stylometry_score} label="Style Score" colorClass="bg-indigo-500" />
+              <ScoreBar value={sub.stylometry_score} label="Style Score" colorClass="bg-gray-500" />
               <div className="mt-3 space-y-1">
                 <div className="flex justify-between text-xs"><span className="text-slate-500">Words</span><span className="font-medium text-slate-700">{sub.stylometry_features?.word_count}</span></div>
                 <div className="flex justify-between text-xs"><span className="text-slate-500">Sentences</span><span className="font-medium text-slate-700">{sub.stylometry_features?.sentence_count}</span></div>
@@ -125,13 +125,13 @@ function ReviewModal({ sub, onClose, onDecision }) {
             </div>
             <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3}
               placeholder="Add reviewer notes (optional)..." data-testid="review-notes"
-              className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none" />
+              className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none" />
           </div>
 
           <div className="flex gap-3">
             <button onClick={onClose} className="flex-1 py-3 border border-slate-200 text-slate-600 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors">Cancel</button>
             <button onClick={handleSubmit} disabled={!decision || submitting}
-              className="flex-1 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-60 transition-colors"
+              className="flex-1 py-3 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-black disabled:opacity-60 transition-colors"
               data-testid="submit-review-button">
               {submitting ? 'Submitting...' : 'Submit Decision'}
             </button>
@@ -163,7 +163,7 @@ export default function ReviewerPanel() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  if (loading) return <div className="flex h-64 items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="flex h-64 items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full" /></div>;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -171,7 +171,7 @@ export default function ReviewerPanel() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <Shield className="w-7 h-7 text-indigo-600" /> Review Panel
+              <Shield className="w-7 h-7 text-gray-900" /> Review Panel
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">Moderation Queue</p>
           </div>
@@ -249,7 +249,7 @@ export default function ReviewerPanel() {
                       <td className="px-4 py-4 text-slate-500 text-xs">{new Date(sub.created_at).toLocaleDateString()}</td>
                       <td className="px-4 py-4">
                         <button onClick={() => setSelected(sub)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-lg hover:bg-black transition-colors"
                           data-testid={`review-btn-${sub.id}`}>
                           <Eye className="w-3.5 h-3.5" /> Review
                         </button>

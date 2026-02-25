@@ -46,7 +46,7 @@ export default function CertificatePage() {
       const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
       const a = document.createElement('a');
       a.href = url;
-      a.download = `VHCCS-${cert.verification_id}.pdf`;
+      a.download = `TrustInk-${cert.verification_id}.pdf`;
       a.click();
       window.URL.revokeObjectURL(url);
       toast.success('PDF downloaded!');
@@ -57,7 +57,7 @@ export default function CertificatePage() {
 
   if (loading) return (
     <div className="flex h-64 items-center justify-center">
-      <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" />
+      <div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full" />
     </div>
   );
 
@@ -68,8 +68,8 @@ export default function CertificatePage() {
           <XCircle className="w-8 h-8 text-rose-500" />
         </div>
         <h2 className="text-xl font-bold text-slate-800 mb-2">Verification Not Found</h2>
-        <p className="text-slate-500 mb-6">The verification ID <code className="font-mono text-indigo-600">{verificationId}</code> was not found in our registry.</p>
-        <Link to="/registry" className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors">Browse Registry</Link>
+        <p className="text-slate-500 mb-6">The verification ID <code className="font-mono text-gray-900">{verificationId}</code> was not found in our registry.</p>
+        <Link to="/registry" className="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-black transition-colors">Browse Registry</Link>
       </div>
     </div>
   );
@@ -77,7 +77,7 @@ export default function CertificatePage() {
   const isValid = cert.valid && cert.status === 'active';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Badge */}
         <div className={`rounded-3xl p-8 text-center mb-6 shadow-xl border-2 ${isValid ? 'bg-white border-emerald-200' : 'bg-white border-rose-200'}`} data-testid="certificate-card">
@@ -97,7 +97,7 @@ export default function CertificatePage() {
               <h1 className="text-2xl font-bold text-slate-900 mb-2">{cert.content_title}</h1>
               <p className="text-slate-500">by <span className="font-semibold text-slate-700">{cert.creator_name}</span></p>
               <button onClick={downloadPDF}
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors"
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-black transition-colors"
                 data-testid="download-pdf-btn">
                 <Download className="w-4 h-4" /> Download Certificate PDF
               </button>
@@ -125,7 +125,7 @@ export default function CertificatePage() {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1">Verification ID</p>
-              <p className="font-mono text-indigo-600 font-medium" data-testid="verification-id">{cert.verification_id}</p>
+              <p className="font-mono text-gray-900 font-medium" data-testid="verification-id">{cert.verification_id}</p>
             </div>
             <div>
               <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1">Status</p>
@@ -151,7 +151,7 @@ export default function CertificatePage() {
           <div>
             <div className="flex items-center justify-between mb-1">
               <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold">SHA-256 Content Hash</p>
-              <button onClick={copyHash} className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800" data-testid="copy-hash-btn">
+              <button onClick={copyHash} className="flex items-center gap-1 text-xs text-gray-900 hover:text-black" data-testid="copy-hash-btn">
                 <Copy className="w-3 h-3" /> Copy
               </button>
             </div>
@@ -178,21 +178,21 @@ export default function CertificatePage() {
             <pre className="bg-slate-900 text-emerald-400 text-xs font-mono rounded-xl p-4 overflow-x-auto">
 {`<a href="${BACKEND_URL}/verify/${cert.verification_id}" target="_blank"
    style="display:inline-flex;align-items:center;gap:8px;
-          padding:8px 16px;background:linear-gradient(135deg,#4f46e5,#7c3aed);
+          padding:8px 16px;background:linear-gradient(135deg,#111827,#374151);
           color:white;border-radius:24px;font-family:-apple-system,sans-serif;
           font-size:13px;font-weight:600;text-decoration:none;">
   Verified Human Content
 </a>`}
             </pre>
-            <button onClick={() => { navigator.clipboard.writeText(`<a href="${BACKEND_URL}/verify/${cert.verification_id}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;border-radius:24px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;">Verified Human Content</a>`); toast.success('Embed code copied!'); }}
-              className="mt-3 flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-800" data-testid="copy-embed-code">
+            <button onClick={() => { navigator.clipboard.writeText(`<a href="${BACKEND_URL}/verify/${cert.verification_id}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#111827,#374151);color:white;border-radius:24px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;">Verified Human Content</a>`); toast.success('Embed code copied!'); }}
+              className="mt-3 flex items-center gap-2 text-sm text-gray-900 hover:text-black" data-testid="copy-embed-code">
               <Copy className="w-4 h-4" /> Copy Embed Code
             </button>
           </div>
         )}
 
         <div className="text-center mt-6">
-          <Link to="/registry" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+          <Link to="/registry" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-gray-900 transition-colors">
             <ExternalLink className="w-4 h-4" /> Browse Public Registry
           </Link>
         </div>

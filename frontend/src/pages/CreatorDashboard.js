@@ -107,7 +107,7 @@ export default function CreatorDashboard() {
     { id: 'apikeys', label: 'API Keys', icon: Key },
   ];
 
-  if (loading) return <div className="flex h-64 items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="flex h-64 items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full" /></div>;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -125,7 +125,7 @@ export default function CreatorDashboard() {
         {stats && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
-              { label: 'Total Submissions', value: stats.total, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+              { label: 'Total Submissions', value: stats.total, color: 'text-gray-900', bg: 'bg-gray-50' },
               { label: 'Approved', value: stats.approved, color: 'text-emerald-600', bg: 'bg-emerald-50' },
               { label: 'Pending Review', value: stats.pending, color: 'text-amber-600', bg: 'bg-amber-50' },
               { label: 'Rejected', value: stats.rejected, color: 'text-rose-600', bg: 'bg-rose-50' },
@@ -143,7 +143,7 @@ export default function CreatorDashboard() {
           <div className="flex border-b border-slate-100 overflow-x-auto">
             {tabs.map(t => (
               <button key={t.id} onClick={() => setTab(t.id)}
-                className={`flex items-center gap-2 px-5 py-4 text-sm font-medium whitespace-nowrap transition-colors ${tab === t.id ? 'text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex items-center gap-2 px-5 py-4 text-sm font-medium whitespace-nowrap transition-colors ${tab === t.id ? 'text-gray-900 border-b-2 border-gray-900 bg-gray-50/50' : 'text-slate-500 hover:text-slate-700'}`}
                 data-testid={`tab-${t.id}`}>
                 <t.icon className="w-4 h-4" />{t.label}
               </button>
@@ -159,7 +159,7 @@ export default function CreatorDashboard() {
                   <div className="text-center py-12 text-slate-400">
                     <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
                     <p>No submissions yet. Start by submitting content!</p>
-                    <button onClick={() => setTab('submit')} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 transition-colors">Submit Content</button>
+                    <button onClick={() => setTab('submit')} className="mt-4 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-black transition-colors">Submit Content</button>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -192,23 +192,23 @@ export default function CreatorDashboard() {
                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Content Title *</label>
                     <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required
                       placeholder="e.g., My Analysis of Climate Change" data-testid="submission-title"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all" />
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Content URL (optional)</label>
                     <input value={form.content_url} onChange={e => setForm(f => ({ ...f, content_url: e.target.value }))}
                       placeholder="https://your-blog.com/article" data-testid="submission-url"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all" />
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Content Text * (min 50 chars)</label>
                     <textarea value={form.content_text} onChange={e => setForm(f => ({ ...f, content_text: e.target.value }))} required
                       rows={8} placeholder="Paste your full article or text content here..." data-testid="submission-content"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 transition-all resize-none" />
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all resize-none" />
                     <p className="text-xs text-slate-400 mt-1">{form.content_text.length} characters</p>
                   </div>
                   <button type="submit" disabled={submitting} data-testid="submit-content-button"
-                    className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 disabled:opacity-60 transition-colors">
+                    className="px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-black disabled:opacity-60 transition-colors">
                     {submitting ? 'Analyzing...' : 'Submit for Certification'}
                   </button>
                 </form>
@@ -233,7 +233,7 @@ export default function CreatorDashboard() {
                       </div>
                       <div>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Stylometry</p>
-                        <ScoreBar label="Style Score" value={result.stylometry_score} color="bg-indigo-500" />
+                        <ScoreBar label="Style Score" value={result.stylometry_score} color="bg-gray-500" />
                         <p className="text-xs text-slate-500">Words: {result.stylometry_features?.word_count}</p>
                         <p className="text-xs text-slate-500">Vocab Richness: {(result.stylometry_features?.vocabulary_richness * 100).toFixed(0)}%</p>
                       </div>
@@ -279,7 +279,7 @@ export default function CreatorDashboard() {
                               <td className="py-3">
                                 {sub.verification_id ? (
                                   <a href={`/verify/${sub.verification_id}`} target="_blank" rel="noopener noreferrer"
-                                    className="text-indigo-600 font-mono text-xs hover:underline flex items-center gap-1">
+                                    className="text-gray-900 font-mono text-xs hover:underline flex items-center gap-1">
                                     {sub.verification_id} <ExternalLink className="w-3 h-3" />
                                   </a>
                                 ) : <span className="text-slate-300 text-xs">—</span>}
@@ -305,7 +305,7 @@ export default function CreatorDashboard() {
                 ) : (
                   <div className="space-y-6">
                     {approvedSubs.map(sub => {
-                      const embedCode = `<a href="${BACKEND_URL}/verify/${sub.verification_id}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;border-radius:24px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;">\n  <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>\n  Verified Human Content\n</a>`;
+                      const embedCode = `<a href="${BACKEND_URL}/verify/${sub.verification_id}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,#111827,#374151);color:white;border-radius:24px;font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;">\n  <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>\n  Verified Human Content\n</a>`;
                       return (
                         <div key={sub.id} className="border border-slate-200 rounded-2xl p-6 bg-slate-50">
                           <div className="flex items-start justify-between gap-4 mb-4">
@@ -333,7 +333,7 @@ export default function CreatorDashboard() {
                             <div className="flex items-center justify-between mb-2">
                               <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Embed Code</p>
                               <button onClick={() => { navigator.clipboard.writeText(embedCode); toast.success('Copied!'); }}
-                                className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800" data-testid="copy-embed-btn">
+                                className="flex items-center gap-1 text-xs text-gray-900 hover:text-black" data-testid="copy-embed-btn">
                                 <Copy className="w-3.5 h-3.5" /> Copy
                               </button>
                             </div>
@@ -355,14 +355,14 @@ export default function CreatorDashboard() {
                   <span className="text-xs text-slate-400">{apiKeys.filter(k => k.is_active).length}/10 active</span>
                 </div>
                 <p className="text-sm text-slate-500 mb-5">
-                  Use API keys to integrate VHCCS badge verification into your own platform via
-                  <code className="bg-slate-100 text-indigo-600 px-1 rounded mx-1">GET /api/v1/verify/&#123;id&#125;</code>
-                  with header <code className="bg-slate-100 text-indigo-600 px-1 rounded">X-API-Key: your_key</code>
+                  Use API keys to integrate TrustInk badge verification into your own platform via
+                  <code className="bg-slate-100 text-gray-900 px-1 rounded mx-1">GET /api/v1/verify/&#123;id&#125;</code>
+                  with header <code className="bg-slate-100 text-gray-900 px-1 rounded">X-API-Key: your_key</code>
                 </p>
                 <div className="flex gap-3 mb-6">
                   <input value={newKeyName} onChange={e => setNewKeyName(e.target.value)}
                     placeholder="Key name (e.g., My Blog Integration)" data-testid="api-key-name-input"
-                    className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+                    className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-300" />
                   <button disabled={!newKeyName.trim() || creatingKey}
                     onClick={async () => {
                       setCreatingKey(true);
@@ -375,7 +375,7 @@ export default function CreatorDashboard() {
                       } catch (e) { toast.error(e.response?.data?.detail || 'Failed to create key'); }
                       finally { setCreatingKey(false); }
                     }}
-                    className="px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors whitespace-nowrap"
+                    className="px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-black disabled:opacity-50 transition-colors whitespace-nowrap"
                     data-testid="create-api-key-btn">
                     {creatingKey ? 'Creating...' : '+ Generate Key'}
                   </button>
@@ -403,7 +403,7 @@ export default function CreatorDashboard() {
                             </code>
                             {revealedKeys[k.id] && (
                               <button onClick={() => { navigator.clipboard.writeText(revealedKeys[k.id]); toast.success('Key copied!'); }}
-                                className="ml-2 text-xs text-indigo-600 hover:text-indigo-800">
+                                className="ml-2 text-xs text-gray-900 hover:text-black">
                                 <Copy className="w-3 h-3 inline" /> Copy
                               </button>
                             )}
@@ -430,9 +430,9 @@ export default function CreatorDashboard() {
                   </div>
                 )}
 
-                <div className="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-                  <p className="text-xs font-semibold text-indigo-700 mb-2">Example API Request</p>
-                  <pre className="text-xs font-mono text-indigo-600 overflow-x-auto">{`curl -H "X-API-Key: vhk_your_key_here" \\
+                <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <p className="text-xs font-semibold text-gray-900 mb-2">Example API Request</p>
+                  <pre className="text-xs font-mono text-gray-900 overflow-x-auto">{`curl -H "X-API-Key: vhk_your_key_here" \\
      ${process.env.REACT_APP_BACKEND_URL}/api/v1/verify/VH-2026-XXXXXX`}</pre>
                 </div>
               </div>

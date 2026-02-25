@@ -14,7 +14,7 @@ import './App.css';
 
 function ProtectedRoute({ children, roles = [] }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex h-screen items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="flex h-screen items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full" /></div>;
   if (!user) return <Navigate to="/auth" replace />;
   if (roles.length > 0 && !roles.includes(user.role)) return <Navigate to="/" replace />;
   return children;
