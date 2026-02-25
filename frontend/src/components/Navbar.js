@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Shield, ChevronDown, LogOut, LayoutDashboard, ClipboardList, Globe, User, Menu, X, Settings } from 'lucide-react';
+import { ChevronDown, LogOut, LayoutDashboard, ClipboardList, Globe, Menu, X, Settings } from 'lucide-react';
 
 const trustColors = { high: 'bg-emerald-100 text-emerald-700', medium: 'bg-amber-100 text-amber-700', low: 'bg-rose-100 text-rose-700' };
 
