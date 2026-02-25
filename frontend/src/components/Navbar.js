@@ -29,9 +29,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2 font-bold text-xl text-slate-900">
-            <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
+            <img
+              src="https://customer-assets.emergentagent.com/job_content-cert/artifacts/e38yr6wn_fountain-pen-writing-logo-design-design-concept-free-vector.jpg"
+              alt="TrustInk"
+              className="w-8 h-8 rounded-lg object-contain bg-white border border-gray-100"
+            />
             <span>TrustInk</span>
           </Link>
 
