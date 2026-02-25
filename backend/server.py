@@ -244,7 +244,111 @@ async def issue_cert(sub: dict) -> dict:
     )
     return cert
 
-# ─── ROUTES ───────────────────────────────────────────────
+# ─── EMAIL NOTIFICATIONS (Resend) ─────────────────────────
+async def send_status_email(creator_email: str, creator_name: str, title: str, status: str, notes: str = '', vid: str = ''):
+    if not resend.api_key:
+        return
+    cfg = {
+        'approved': ('#10b981', 'Submission Approved!', f'Your content <strong>"{title}"</strong> has been verified and certified as human-written.'),
+        'rejected': ('#ef4444', 'Submission Not Approved', f'Your submission <strong>"{title}"</strong> was not approved at this time.'),
+        'revision_requested': ('#f59e0b', 'Revision Requested', f'Your submission <strong>"{title}"</strong> requires some revisions before it can be certified.'),
+    }
+    color, subject_suffix, msg = cfg.get(status, ('#6366f1', 'Status Update', f'Your submission <strong>"{title}"</strong> status has been updated.'))
+    badge_html = f'<p><a href="https://content-cert.preview.emergentagent.com/verify/{vid}" style="display:inline-block;padding:10px 20px;background:{color};color:white;border-radius:20px;text-decoration:none;font-weight:600;font-size:13px;">View Certificate</a></p>' if status == 'approved' and vid else ''
+    notes_html = f'<p style="color:#64748b;"><strong>Reviewer notes:</strong> {notes}</p>' if notes else ''
+    html = f"""
+    <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:20px;">
+      <div style="background:white;border-radius:16px;padding:40px;border:1px solid #e2e8f0;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="display:inline-block;width:56px;height:56px;background:{color}20;border-radius:50%;line-height:56px;font-size:28px;margin-bottom:12px;">{'✓' if status=='approved' else '✗' if status=='rejected' else '↻'}</div>
+          <h2 style="color:#1e293b;margin:0;font-size:22px;">{subject_suffix}</h2>
+        </div>
+        <p style="color:#475569;">Hi <strong>{creator_name}</strong>,</p>
+        <p style="color:#475569;">{msg}</p>
+        {notes_html}
+        {badge_html}
+        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
+        <p style="color:#94a3b8;font-size:12px;text-align:center;">VHCCS — Verified Human Content Certification System</p>
+      </div>
+    </div>"""
+    try:
+        params = {"from": SENDER_EMAIL, "to": [creator_email],
+                  "subject": f"VHCCS: {subject_suffix} — {title}", "html": html}
+        await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"Email sent to {creator_email} status={status}")
+    except Exception as e:
+        logger.warning(f"Email send failed: {e}")
+
+# ─── PDF CERTIFICATE GENERATION ───────────────────────────
+def build_cert_pdf(cert: dict) -> bytes:
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=0.8*inch, bottomMargin=0.8*inch,
+                            leftMargin=0.8*inch, rightMargin=0.8*inch)
+    styles = getSampleStyleSheet()
+    indigo = HexColor('#4f46e5')
+    emerald = HexColor('#10b981')
+    slate = HexColor('#1e293b')
+    muted = HexColor('#64748b')
+
+    title_style = ParagraphStyle('title', fontSize=26, textColor=indigo, alignment=TA_CENTER,
+                                  spaceAfter=4, fontName='Helvetica-Bold')
+    sub_style = ParagraphStyle('sub', fontSize=12, textColor=muted, alignment=TA_CENTER, spaceAfter=6)
+    label_style = ParagraphStyle('label', fontSize=8, textColor=muted, fontName='Helvetica-Bold',
+                                  spaceBefore=12, spaceAfter=2)
+    value_style = ParagraphStyle('value', fontSize=10, textColor=slate, spaceAfter=4, leading=14)
+    mono_style = ParagraphStyle('mono', fontSize=7, textColor=slate, fontName='Courier',
+                                 spaceAfter=4, leading=10, wordWrap='CJK')
+
+    ts = datetime.fromisoformat(cert.get('timestamp', datetime.now(timezone.utc).isoformat()))
+    is_active = cert.get('status') == 'active'
+
+    elements = [
+        Paragraph("VHCCS", title_style),
+        Paragraph("Verified Human Content Certification System", sub_style),
+        HRFlowable(width="100%", thickness=2, color=indigo, spaceAfter=16),
+        Spacer(1, 0.1*inch),
+        Paragraph(f"{'Certificate of Authenticity' if is_active else 'REVOKED CERTIFICATE'}", ParagraphStyle(
+            'cert_title', fontSize=20, textColor=emerald if is_active else HexColor('#ef4444'),
+            alignment=TA_CENTER, fontName='Helvetica-Bold', spaceAfter=4)),
+        Paragraph("This certifies that the following content has been verified as human-written" if is_active
+                  else "This certificate has been revoked.", sub_style),
+        Spacer(1, 0.2*inch),
+    ]
+
+    data = [
+        ['Content Title', cert.get('content_title', 'N/A')],
+        ['Creator', cert.get('creator_name', 'N/A')],
+        ['Verification ID', cert.get('verification_id', 'N/A')],
+        ['Status', cert.get('status', 'N/A').upper()],
+        ['Issued', ts.strftime('%B %d, %Y at %H:%M UTC')],
+    ]
+    if cert.get('revocation_reason'):
+        data.append(['Revocation Reason', cert['revocation_reason']])
+
+    tbl = Table(data, colWidths=[1.8*inch, 5.0*inch])
+    tbl.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), HexColor('#f1f5f9')),
+        ('TEXTCOLOR', (0, 0), (0, -1), indigo),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('PADDING', (0, 0), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#e2e8f0')),
+        ('ROWBACKGROUNDS', (0, 0), (-1, -1), [white, HexColor('#fafafa')]),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    elements.append(tbl)
+    elements.append(Spacer(1, 0.2*inch))
+    elements.append(Paragraph("SHA-256 CONTENT HASH", label_style))
+    elements.append(Paragraph(cert.get('content_hash', 'N/A'), mono_style))
+    elements.append(Paragraph("HMAC-SHA256 SIGNATURE", label_style))
+    elements.append(Paragraph(cert.get('signature', 'N/A'), mono_style))
+    elements.append(Spacer(1, 0.2*inch))
+    elements.append(HRFlowable(width="100%", thickness=1, color=HexColor('#e2e8f0')))
+    elements.append(Paragraph(f"Verify at: https://content-cert.preview.emergentagent.com/verify/{cert.get('verification_id', '')}",
+                               ParagraphStyle('footer', fontSize=8, textColor=muted, alignment=TA_CENTER, spaceBefore=8)))
+
+    doc.build(elements)
+    return buffer.getvalue()
 r = APIRouter(prefix="/api")
 
 # AUTH
