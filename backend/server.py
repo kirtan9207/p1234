@@ -486,10 +486,25 @@ async def review(sid: str, d: ReviewDecision, u=Depends(reviewer_only)):
     if d.decision == "approved":
         s_dict = clean(s)
         s_dict.update(upd)
-        await issue_cert(s_dict)
+        cert = await issue_cert(s_dict)
         await update_trust(s["creator_id"], "approved")
+        # Email notification
+        creator = await db.users.find_one({"id": s["creator_id"]}, {"_id": 0})
+        if creator:
+            asyncio.create_task(send_status_email(
+                creator["email"], creator["name"], s["title"], "approved", d.notes,
+                cert.get("verification_id", "")))
     elif d.decision == "rejected":
         await update_trust(s["creator_id"], "rejected")
+        creator = await db.users.find_one({"id": s["creator_id"]}, {"_id": 0})
+        if creator:
+            asyncio.create_task(send_status_email(
+                creator["email"], creator["name"], s["title"], "rejected", d.notes))
+    elif d.decision == "revision_requested":
+        creator = await db.users.find_one({"id": s["creator_id"]}, {"_id": 0})
+        if creator:
+            asyncio.create_task(send_status_email(
+                creator["email"], creator["name"], s["title"], "revision_requested", d.notes))
 
     return {"message": f"Submission {d.decision}", "submission_id": sid}
 
