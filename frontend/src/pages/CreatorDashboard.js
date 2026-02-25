@@ -10,7 +10,7 @@ const statusConfig = {
   pending: { color: 'bg-amber-100 text-amber-700', icon: Clock, iconColor: 'text-amber-500' },
   rejected: { color: 'bg-rose-100 text-rose-700', icon: XCircle, iconColor: 'text-rose-500' },
   flagged: { color: 'bg-orange-100 text-orange-700', icon: AlertTriangle, iconColor: 'text-orange-500' },
-  revision_requested: { color: 'bg-blue-100 text-blue-700', icon: Clock, iconColor: 'text-blue-500' },
+  revision_requested: { color: 'bg-gray-100 text-gray-700', icon: Clock, iconColor: 'text-gray-500' },
 };
 
 function TrustGauge({ score }) {
