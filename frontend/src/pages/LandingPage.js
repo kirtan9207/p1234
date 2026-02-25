@@ -4,9 +4,9 @@ import { api } from '../context/AuthContext';
 import { Shield, CheckCircle, FileText, Award, Users, Lock, Zap, Globe, ArrowRight, Star } from 'lucide-react';
 
 const features = [
-  { icon: Shield, title: 'AI Detection', desc: 'Advanced algorithms analyze writing patterns to distinguish human vs AI-generated content.', color: 'bg-gray-50 text-gray-900' },
-  { icon: FileText, title: 'Stylometry Analysis', desc: 'Deep linguistic fingerprinting examines vocabulary, sentence structure, and writing style.', color: 'bg-gray-50 text-gray-700' },
-  { icon: Lock, title: 'Cryptographic Signing', desc: 'SHA-256 content hashing and HMAC signatures ensure tamper-proof certificate authenticity.', color: 'bg-blue-50 text-blue-600' },
+  { icon: Shield, title: 'AI Detection', desc: 'Advanced algorithms analyze writing patterns to distinguish human vs AI-generated content.', color: 'bg-gray-100 text-gray-900' },
+  { icon: FileText, title: 'Stylometry Analysis', desc: 'Deep linguistic fingerprinting examines vocabulary, sentence structure, and writing style.', color: 'bg-gray-100 text-gray-700' },
+  { icon: Lock, title: 'Cryptographic Signing', desc: 'SHA-256 content hashing and HMAC signatures ensure tamper-proof certificate authenticity.', color: 'bg-gray-100 text-gray-900' },
   { icon: Award, title: 'Digital Certificates', desc: 'Issue verifiable badges with unique IDs that can be embedded on any website or platform.', color: 'bg-emerald-50 text-emerald-600' },
   { icon: Users, title: 'Trust Score Engine', desc: 'Dynamic creator reputation scoring routes content through appropriate verification paths.', color: 'bg-amber-50 text-amber-600' },
   { icon: Globe, title: 'Public Registry', desc: 'Open, searchable ledger of all verified human-created content for public validation.', color: 'bg-rose-50 text-rose-600' },
@@ -98,7 +98,7 @@ export default function LandingPage() {
             {steps.map((s, i) => (
               <div key={i} className="relative text-center p-8 rounded-2xl bg-slate-50 card-hover">
                 {i < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-indigo-200 z-10" />
+                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gray-200 z-10" />
                 )}
                 <div className="text-5xl font-black text-gray-300 mb-4">{s.num}</div>
                 <h3 className="text-lg font-semibold text-slate-800 mb-2">{s.title}</h3>
@@ -142,12 +142,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+      <footer className="bg-black text-gray-400 py-8 text-center text-sm">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Shield className="w-4 h-4 text-gray-500" />
+          <img src="https://customer-assets.emergentagent.com/job_content-cert/artifacts/e38yr6wn_fountain-pen-writing-logo-design-design-concept-free-vector.jpg"
+            alt="TrustInk" className="w-5 h-5 rounded object-contain bg-white" />
           <span className="text-white font-semibold">TrustInk</span>
         </div>
-        <p>Verified Human Content Certification System — Open Source</p>
+        <p>Verified Human Content Certification — Open Source</p>
       </footer>
     </div>
   );
