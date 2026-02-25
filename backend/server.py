@@ -345,7 +345,7 @@ def build_cert_pdf(cert: dict) -> bytes:
     elements.append(Paragraph(cert.get('signature', 'N/A'), mono_style))
     elements.append(Spacer(1, 0.2*inch))
     elements.append(HRFlowable(width="100%", thickness=1, color=HexColor('#e2e8f0')))
-    elements.append(Paragraph(f"Verify at: https://content-cert.preview.emergentagent.com/verify/{cert.get('verification_id', '')}",
+    elements.append(Paragraph(f"Verify at: {FRONTEND_URL}/verify/{cert.get('verification_id', '')}",
                                ParagraphStyle('footer', fontSize=8, textColor=muted, alignment=TA_CENTER, spaceBefore=8)))
 
     doc.build(elements)
