@@ -26,6 +26,21 @@ export default function CertificatePage() {
     }
   };
 
+  const downloadPDF = async () => {
+    try {
+      const res = await api.get(`/certificates/${cert.id}/pdf`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `VHCCS-${cert.verification_id}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      toast.success('PDF downloaded!');
+    } catch (e) {
+      toast.error('Failed to download PDF');
+    }
+  };
+
   if (loading) return (
     <div className="flex h-64 items-center justify-center">
       <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" />
