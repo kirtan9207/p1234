@@ -255,7 +255,7 @@ async def send_status_email(creator_email: str, creator_name: str, title: str, s
         'revision_requested': ('#f59e0b', 'Revision Requested', f'Your submission <strong>"{title}"</strong> requires some revisions before it can be certified.'),
     }
     color, subject_suffix, msg = cfg.get(status, ('#6366f1', 'Status Update', f'Your submission <strong>"{title}"</strong> status has been updated.'))
-    badge_html = f'<p><a href="https://content-cert.preview.emergentagent.com/verify/{vid}" style="display:inline-block;padding:10px 20px;background:{color};color:white;border-radius:20px;text-decoration:none;font-weight:600;font-size:13px;">View Certificate</a></p>' if status == 'approved' and vid else ''
+    badge_html = f'<p><a href="{FRONTEND_URL}/verify/{vid}" style="display:inline-block;padding:10px 20px;background:{color};color:white;border-radius:20px;text-decoration:none;font-weight:600;font-size:13px;">View Certificate</a></p>' if status == 'approved' and vid else ''
     notes_html = f'<p style="color:#64748b;"><strong>Reviewer notes:</strong> {notes}</p>' if notes else ''
     html = f"""
     <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:0 auto;background:#f8fafc;padding:20px;">
