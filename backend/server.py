@@ -73,6 +73,15 @@ class ReviewDecision(BaseModel):
 class RevocationReq(BaseModel):
     reason: str
 
+class APIKeyCreate(BaseModel):
+    name: str
+
+class UserStatusUpdate(BaseModel):
+    status: str  # active | suspended | banned
+
+class TrustScoreUpdate(BaseModel):
+    trust_score: int
+
 # ─── HELPERS ──────────────────────────────────────────────
 def hash_pw(pw): return pwd_context.hash(pw)
 def verify_pw(plain, hashed): return pwd_context.verify(plain, hashed)
