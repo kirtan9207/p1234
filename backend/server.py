@@ -399,7 +399,7 @@ async def submit(d: SubmissionCreate, u=Depends(current_user)):
     if len(d.content_text.strip()) < 50:
         raise HTTPException(400, "Content must be at least 50 characters")
 
-    ai = analyze_ai(d.content_text)
+    ai = await analyze_ai(d.content_text)
     style = analyze_style(d.content_text)
     trust = tl(u.get("trust_score", 50))
 
