@@ -1,4 +1,4 @@
-# VHCCS — Product Requirements Document
+# TrustInk (formerly VHCCS) — Product Requirements Document
 
 ## Original Problem Statement
 Verified Human Content Certification System (VHCCS): An open-source framework to authenticate text content and issue "Verified Human Created" badges using AI detection, stylometry, cryptographic signing, and trust-based moderation workflows.
