@@ -31,6 +31,7 @@ HIGH_TRUST_THRESHOLD = 80
 HF_API_URL = "https://api-inference.huggingface.co/models/roberta-base-openai-detector"
 HF_TOKEN = os.environ.get('HF_API_TOKEN', '')
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'https://content-cert.preview.emergentagent.com')
 resend.api_key = os.environ.get('RESEND_API_KEY', '')
 
 client = AsyncIOMotorClient(MONGO_URL)
