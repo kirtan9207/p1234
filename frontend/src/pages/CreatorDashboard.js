@@ -346,6 +346,97 @@ export default function CreatorDashboard() {
                 )}
               </div>
             )}
+
+            {/* API Keys Tab */}
+            {tab === 'apikeys' && (
+              <div className="max-w-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-slate-800">API Keys for Third-Party Validation</h3>
+                  <span className="text-xs text-slate-400">{apiKeys.filter(k => k.is_active).length}/10 active</span>
+                </div>
+                <p className="text-sm text-slate-500 mb-5">
+                  Use API keys to integrate VHCCS badge verification into your own platform via
+                  <code className="bg-slate-100 text-indigo-600 px-1 rounded mx-1">GET /api/v1/verify/&#123;id&#125;</code>
+                  with header <code className="bg-slate-100 text-indigo-600 px-1 rounded">X-API-Key: your_key</code>
+                </p>
+                <div className="flex gap-3 mb-6">
+                  <input value={newKeyName} onChange={e => setNewKeyName(e.target.value)}
+                    placeholder="Key name (e.g., My Blog Integration)" data-testid="api-key-name-input"
+                    className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+                  <button disabled={!newKeyName.trim() || creatingKey}
+                    onClick={async () => {
+                      setCreatingKey(true);
+                      try {
+                        const res = await api.post('/apikeys', { name: newKeyName.trim() });
+                        setRevealedKeys(prev => ({ ...prev, [res.data.id]: res.data.key_value }));
+                        toast.success('API key created! Save it now — it won\'t be shown again.');
+                        setNewKeyName('');
+                        fetchData();
+                      } catch (e) { toast.error(e.response?.data?.detail || 'Failed to create key'); }
+                      finally { setCreatingKey(false); }
+                    }}
+                    className="px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 disabled:opacity-50 transition-colors whitespace-nowrap"
+                    data-testid="create-api-key-btn">
+                    {creatingKey ? 'Creating...' : '+ Generate Key'}
+                  </button>
+                </div>
+
+                {apiKeys.length === 0 ? (
+                  <div className="text-center py-10 text-slate-400 border-2 border-dashed border-slate-200 rounded-xl">
+                    <Key className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                    <p className="text-sm">No API keys yet. Generate one to get started.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3" data-testid="api-keys-list">
+                    {apiKeys.map(k => (
+                      <div key={k.id} className={`p-4 rounded-xl border ${k.is_active ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 opacity-60'}`}>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <p className="font-medium text-slate-800 text-sm">{k.name}</p>
+                              <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${k.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+                                {k.is_active ? 'Active' : 'Revoked'}
+                              </span>
+                            </div>
+                            <code className="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                              {revealedKeys[k.id] || k.key_preview}
+                            </code>
+                            {revealedKeys[k.id] && (
+                              <button onClick={() => { navigator.clipboard.writeText(revealedKeys[k.id]); toast.success('Key copied!'); }}
+                                className="ml-2 text-xs text-indigo-600 hover:text-indigo-800">
+                                <Copy className="w-3 h-3 inline" /> Copy
+                              </button>
+                            )}
+                            <p className="text-xs text-slate-400 mt-1">
+                              Used {k.usage_count || 0}× · Created {new Date(k.created_at).toLocaleDateString()}
+                              {k.last_used_at && ` · Last used ${new Date(k.last_used_at).toLocaleDateString()}`}
+                            </p>
+                          </div>
+                          {k.is_active && (
+                            <button onClick={async () => {
+                              if (!window.confirm('Revoke this API key?')) return;
+                              await api.delete(`/apikeys/${k.id}`);
+                              toast.success('Key revoked');
+                              fetchData();
+                            }}
+                              className="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                              data-testid={`delete-key-${k.id}`}>
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                  <p className="text-xs font-semibold text-indigo-700 mb-2">Example API Request</p>
+                  <pre className="text-xs font-mono text-indigo-600 overflow-x-auto">{`curl -H "X-API-Key: vhk_your_key_here" \\
+     ${process.env.REACT_APP_BACKEND_URL}/api/v1/verify/VH-2026-XXXXXX`}</pre>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
