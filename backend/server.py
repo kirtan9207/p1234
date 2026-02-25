@@ -710,6 +710,8 @@ async def third_party_verify(vid: str, x_api_key: Optional[str] = Header(None, a
 async def update_user_status(uid: str, d: UserStatusUpdate, u=Depends(admin_only)):
     if d.status not in ["active", "suspended", "banned"]:
         raise HTTPException(400, "Invalid status")
+    if uid == u["id"]:
+        raise HTTPException(400, "Cannot change your own account status")
     target = await db.users.find_one({"id": uid})
     if not target: raise HTTPException(404, "User not found")
     await db.users.update_one({"id": uid}, {"$set": {"status": d.status}})

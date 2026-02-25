@@ -37,6 +37,10 @@ export default function CertificatePage() {
   };
 
   const downloadPDF = async () => {
+    if (!cert?.id) {
+      toast.error('Certificate ID not available for download');
+      return;
+    }
     try {
       const res = await api.get(`/certificates/${cert.id}/pdf`, { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
