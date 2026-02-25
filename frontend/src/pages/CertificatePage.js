@@ -92,6 +92,11 @@ export default function CertificatePage() {
               </div>
               <h1 className="text-2xl font-bold text-slate-900 mb-2">{cert.content_title}</h1>
               <p className="text-slate-500">by <span className="font-semibold text-slate-700">{cert.creator_name}</span></p>
+              <button onClick={downloadPDF}
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors"
+                data-testid="download-pdf-btn">
+                <Download className="w-4 h-4" /> Download Certificate PDF
+              </button>
             </>
           ) : (
             <>
