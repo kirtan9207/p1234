@@ -627,7 +627,114 @@ async def seed_demo():
         {"email": "creator@vhccs.com", "password": "creator123", "role": "creator"}
     ]}
 
-app.include_router(r)
+# CERTIFICATE PDF DOWNLOAD
+@r.get("/certificates/{cid}/pdf")
+async def cert_pdf(cid: str):
+    c = await db.certificates.find_one({"id": cid}, {"_id": 0})
+    if not c: raise HTTPException(404, "Certificate not found")
+    pdf_bytes = await asyncio.to_thread(build_cert_pdf, c)
+    vid = c.get("verification_id", "certificate")
+    return StreamingResponse(
+        BytesIO(pdf_bytes),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="VHCCS-{vid}.pdf"'}
+    )
+
+# API KEY SYSTEM
+@r.post("/apikeys")
+async def create_api_key(d: APIKeyCreate, u=Depends(current_user)):
+    count = await db.api_keys.count_documents({"owner_id": u["id"], "is_active": True})
+    if count >= 10:
+        raise HTTPException(400, "Maximum 10 active API keys allowed")
+    key_value = f"vhk_{secrets.token_hex(24)}"
+    key_doc = {
+        "id": str(uuid.uuid4()),
+        "key_value": key_value,
+        "name": d.name,
+        "owner_id": u["id"],
+        "owner_name": u["name"],
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "last_used_at": None,
+        "is_active": True,
+        "usage_count": 0
+    }
+    await db.api_keys.insert_one(key_doc.copy())
+    key_doc.pop("_id", None)
+    return key_doc
+
+@r.get("/apikeys")
+async def list_api_keys(u=Depends(current_user)):
+    keys = await db.api_keys.find({"owner_id": u["id"]}, {"_id": 0}).sort("created_at", -1).to_list(20)
+    # Mask key after first 12 chars
+    for k in keys:
+        kv = k.get("key_value", "")
+        k["key_preview"] = kv[:16] + "..." + kv[-4:] if len(kv) > 20 else kv
+    return keys
+
+@r.delete("/apikeys/{key_id}")
+async def delete_api_key(key_id: str, u=Depends(current_user)):
+    k = await db.api_keys.find_one({"id": key_id})
+    if not k: raise HTTPException(404, "Key not found")
+    if k["owner_id"] != u["id"] and u["role"] != "admin":
+        raise HTTPException(403, "Access denied")
+    await db.api_keys.update_one({"id": key_id}, {"$set": {"is_active": False}})
+    return {"message": "API key revoked"}
+
+# THIRD-PARTY VALIDATION ENDPOINT (requires API key)
+@r.get("/v1/verify/{vid}")
+async def third_party_verify(vid: str, x_api_key: Optional[str] = Header(None, alias="X-API-Key"),
+                              api_key: Optional[str] = Query(None)):
+    raw_key = x_api_key or api_key
+    if not raw_key:
+        raise HTTPException(401, "API key required. Pass via X-API-Key header or ?api_key= query param")
+    k = await db.api_keys.find_one({"key_value": raw_key, "is_active": True})
+    if not k:
+        raise HTTPException(403, "Invalid or revoked API key")
+    # Track usage
+    await db.api_keys.update_one({"key_value": raw_key}, {
+        "$set": {"last_used_at": datetime.now(timezone.utc).isoformat()},
+        "$inc": {"usage_count": 1}
+    })
+    c = await db.certificates.find_one({"verification_id": vid}, {"_id": 0})
+    if not c: raise HTTPException(404, "Verification ID not found")
+    return {
+        "valid": c["status"] == "active", "verification_id": vid,
+        "status": c["status"], "creator_name": c.get("creator_name"),
+        "content_title": c.get("content_title"), "content_hash": c.get("content_hash"),
+        "timestamp": c.get("timestamp"), "issued_by": "VHCCS",
+        "api_version": "v1"
+    }
+
+# ADMIN USER MANAGEMENT
+@r.post("/admin/users/{uid}/status")
+async def update_user_status(uid: str, d: UserStatusUpdate, u=Depends(admin_only)):
+    if d.status not in ["active", "suspended", "banned"]:
+        raise HTTPException(400, "Invalid status")
+    target = await db.users.find_one({"id": uid})
+    if not target: raise HTTPException(404, "User not found")
+    await db.users.update_one({"id": uid}, {"$set": {"status": d.status}})
+    return {"message": f"User status updated to {d.status}", "user_id": uid}
+
+@r.put("/admin/users/{uid}/trust")
+async def update_user_trust(uid: str, d: TrustScoreUpdate, u=Depends(admin_only)):
+    if not (0 <= d.trust_score <= 100):
+        raise HTTPException(400, "Trust score must be 0-100")
+    await db.users.update_one({"id": uid}, {"$set": {"trust_score": d.trust_score}})
+    return {"message": "Trust score updated", "trust_score": d.trust_score, "trust_level": tl(d.trust_score)}
+
+@r.get("/admin/stats")
+async def admin_stats(u=Depends(admin_only)):
+    return {
+        "total_users": await db.users.count_documents({}),
+        "creators": await db.users.count_documents({"role": "creator"}),
+        "reviewers": await db.users.count_documents({"role": "reviewer"}),
+        "suspended": await db.users.count_documents({"status": "suspended"}),
+        "banned": await db.users.count_documents({"status": "banned"}),
+        "total_submissions": await db.submissions.count_documents({}),
+        "total_certificates": await db.certificates.count_documents({"status": "active"}),
+        "pending_review": await db.submissions.count_documents({"status": "pending"}),
+        "api_keys_active": await db.api_keys.count_documents({"is_active": True}),
+    }
 
 @app.on_event("startup")
 async def startup():
