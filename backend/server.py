@@ -117,20 +117,18 @@ async def admin_only(u=Depends(current_user)):
     if u["role"] != "admin": raise HTTPException(403, "Admin access required")
     return u
 
-# ─── AI DETECTION (MOCKED) ────────────────────────────────
-def analyze_ai(text: str) -> dict:
+# ─── AI DETECTION (HuggingFace roberta-base-openai-detector + mock fallback) ─
+def _mock_ai(text: str) -> dict:
     words = text.split()
     sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
     if not sentences:
-        return {"human_probability": 0.5, "ai_probability": 0.5, "confidence": "low"}
-
+        return {"human_probability": 0.5, "ai_probability": 0.5, "confidence": "low", "source": "mock"}
     avg_sl = len(words) / max(len(sentences), 1)
     vocab_r = len(set(w.lower() for w in words)) / max(len(words), 1)
     variance = 0
     if len(sentences) > 1:
         sl = [len(s.split()) for s in sentences]
         variance = sum((x - avg_sl) ** 2 for x in sl) / len(sl)
-
     score = 0.62
     if vocab_r > 0.5: score += 0.10
     if variance > 10: score += 0.07
@@ -140,7 +138,36 @@ def analyze_ai(text: str) -> dict:
     score += random.uniform(-0.07, 0.07)
     score = max(0.28, min(0.97, score))
     conf = "high" if score > 0.82 or score < 0.35 else ("medium" if score > 0.6 else "low")
-    return {"human_probability": round(score, 3), "ai_probability": round(1 - score, 3), "confidence": conf}
+    return {"human_probability": round(score, 3), "ai_probability": round(1 - score, 3), "confidence": conf, "source": "mock"}
+
+async def analyze_ai(text: str) -> dict:
+    """Real AI detection via HuggingFace roberta-base-openai-detector, fallback to mock."""
+    headers = {"Content-Type": "application/json"}
+    if HF_TOKEN:
+        headers["Authorization"] = f"Bearer {HF_TOKEN}"
+    text_truncated = text[:1500]
+
+    def call_hf():
+        return requests.post(HF_API_URL, headers=headers, json={"inputs": text_truncated}, timeout=12)
+
+    try:
+        resp = await asyncio.to_thread(call_hf)
+        if resp.status_code == 200:
+            data = resp.json()
+            # Response: [[{label,score},...]] or [{label,score},...]
+            results = data[0] if (data and isinstance(data[0], list)) else data
+            if isinstance(results, list) and results:
+                human_score = next((r['score'] for r in results if r.get('label') == 'Real'), None)
+                ai_score = next((r['score'] for r in results if r.get('label') == 'Fake'), None)
+                if human_score is not None and ai_score is not None:
+                    top = max(human_score, ai_score)
+                    conf = "high" if top > 0.85 else ("medium" if top > 0.65 else "low")
+                    return {"human_probability": round(human_score, 3), "ai_probability": round(ai_score, 3),
+                            "confidence": conf, "source": "roberta-openai-detector"}
+        logger.warning(f"HuggingFace API returned {resp.status_code}, using mock fallback")
+    except Exception as e:
+        logger.warning(f"HuggingFace API error: {e}, using mock fallback")
+    return _mock_ai(text)
 
 # ─── STYLOMETRY (MOCKED) ──────────────────────────────────
 def analyze_style(text: str) -> dict:
