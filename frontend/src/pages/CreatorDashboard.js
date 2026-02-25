@@ -104,6 +104,7 @@ export default function CreatorDashboard() {
     { id: 'submit', label: 'Submit Content', icon: Plus },
     { id: 'history', label: 'My Submissions', icon: FileText },
     { id: 'badge', label: 'Badge Generator', icon: Award },
+    { id: 'apikeys', label: 'API Keys', icon: Key },
   ];
 
   if (loading) return <div className="flex h-64 items-center justify-center"><div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full" /></div>;
