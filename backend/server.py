@@ -737,8 +737,6 @@ async def admin_stats(u=Depends(admin_only)):
     }
 
 @app.on_event("startup")
-async def startup():
-    await db.users.create_index("email", unique=True)
     await db.users.create_index("id")
     await db.submissions.create_index("id")
     await db.submissions.create_index("creator_id")
