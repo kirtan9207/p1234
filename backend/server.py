@@ -460,13 +460,19 @@ async def mod_stats(u=Depends(reviewer_only)):
 
 @r.get("/moderation/queue")
 async def queue(u=Depends(reviewer_only)):
-    subs = await db.submissions.find(
-        {"status": {"$in": ["pending", "flagged"]}}, {"_id": 0}
-    ).sort("created_at", 1).to_list(100)
+    pipeline = [
+        {"$match": {"status": {"$in": ["pending", "flagged"]}}},
+        {"$lookup": {"from": "users", "localField": "creator_id", "foreignField": "id", "as": "creator_doc"}},
+        {"$sort": {"created_at": 1}},
+        {"$limit": 100}
+    ]
+    subs = await db.submissions.aggregate(pipeline).to_list(100)
     result = []
     for s in subs:
-        creator = await db.users.find_one({"id": s["creator_id"]}, {"_id": 0, "password_hash": 0})
-        s["creator_trust_score"] = creator.get("trust_score", 50) if creator else 50
+        s.pop("_id", None)
+        creator_list = s.pop("creator_doc", [])
+        creator = creator_list[0] if creator_list else {}
+        s["creator_trust_score"] = creator.get("trust_score", 50)
         s["creator_trust_level"] = tl(s["creator_trust_score"])
         result.append(s)
     return result
