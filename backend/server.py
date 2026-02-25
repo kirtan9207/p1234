@@ -36,7 +36,7 @@ resend.api_key = os.environ.get('RESEND_API_KEY', '')
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
 
-app = FastAPI(title="VHCCS API")
+app = FastAPI(title="TrustInk API")
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -268,12 +268,12 @@ async def send_status_email(creator_email: str, creator_name: str, title: str, s
         {notes_html}
         {badge_html}
         <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0;">
-        <p style="color:#94a3b8;font-size:12px;text-align:center;">VHCCS — Verified Human Content Certification System</p>
+        <p style="color:#94a3b8;font-size:12px;text-align:center;">TrustInk — Verified Human Content Certification</p>
       </div>
     </div>"""
     try:
         params = {"from": SENDER_EMAIL, "to": [creator_email],
-                  "subject": f"VHCCS: {subject_suffix} — {title}", "html": html}
+                  "subject": f"TrustInk: {subject_suffix} — {title}", "html": html}
         await asyncio.to_thread(resend.Emails.send, params)
         logger.info(f"Email sent to {creator_email} status={status}")
     except Exception as e:
@@ -637,7 +637,7 @@ async def cert_pdf(cid: str):
     return StreamingResponse(
         BytesIO(pdf_bytes),
         media_type="application/pdf",
-        headers={"Content-Disposition": f'attachment; filename="VHCCS-{vid}.pdf"'}
+        headers={"Content-Disposition": f'attachment; filename="TrustInk-{vid}.pdf"'}
     )
 
 # API KEY SYSTEM
@@ -701,7 +701,7 @@ async def third_party_verify(vid: str, x_api_key: Optional[str] = Header(None, a
         "valid": c["status"] == "active", "verification_id": vid,
         "status": c["status"], "creator_name": c.get("creator_name"),
         "content_title": c.get("content_title"), "content_hash": c.get("content_hash"),
-        "timestamp": c.get("timestamp"), "issued_by": "VHCCS",
+        "timestamp": c.get("timestamp"), "issued_by": "TrustInk",
         "api_version": "v1"
     }
 
@@ -751,7 +751,7 @@ async def startup():
     await db.certificates.create_index("id")
     await db.api_keys.create_index("key_value", unique=True)
     await db.api_keys.create_index("owner_id")
-    logger.info("VHCCS API started")
+    logger.info("TrustInk API started")
 
 @app.on_event("shutdown")
 async def shutdown():
