@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useAuth, api } from '../context/AuthContext';
-import { CheckCircle, Clock, XCircle, AlertTriangle, Plus, FileText, Award, Copy, ExternalLink, TrendingUp } from 'lucide-react';
+import { CheckCircle, Clock, XCircle, AlertTriangle, Plus, FileText, Award, Copy, ExternalLink, TrendingUp, Key, Trash2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
