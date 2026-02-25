@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../context/AuthContext';
-import { Shield, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function AuthPage() {
   const [tab, setTab] = useState('login');
@@ -39,11 +39,13 @@ export default function AuthPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gray-900 rounded-2xl mb-4">
-            <Shield className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 bg-white border-2 border-gray-100 shadow-sm">
+            <img
+              src="https://customer-assets.emergentagent.com/job_content-cert/artifacts/e38yr6wn_fountain-pen-writing-logo-design-design-concept-free-vector.jpg"
+              alt="TrustInk" className="w-10 h-10 object-contain" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">TrustInk Platform</h1>
-          <p className="text-slate-500 text-sm mt-1">Human Content Certification System</p>
+          <h1 className="text-2xl font-bold text-slate-900">TrustInk</h1>
+          <p className="text-slate-500 text-sm mt-1">Verified Human Content Certification</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
