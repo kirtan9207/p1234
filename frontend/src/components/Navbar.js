@@ -75,6 +75,11 @@ export default function Navbar() {
                       <p className="text-sm font-medium text-slate-800 truncate">{user.email}</p>
                       <p className="text-xs text-indigo-600 capitalize font-medium">{user.role}</p>
                     </div>
+                    {user.role === 'admin' && (
+                      <button onClick={() => { navigate('/admin'); setDropdownOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                        <Settings className="w-4 h-4" /> Admin Panel
+                      </button>
+                    )}
                     {user.role !== 'reviewer' && (
                       <button onClick={() => { navigate('/dashboard'); setDropdownOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                         <LayoutDashboard className="w-4 h-4" /> Dashboard
