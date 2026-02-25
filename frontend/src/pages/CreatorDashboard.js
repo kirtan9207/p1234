@@ -62,12 +62,14 @@ export default function CreatorDashboard() {
 
   const fetchData = useCallback(async () => {
     try {
-      const [statsRes, subsRes] = await Promise.all([
+      const [statsRes, subsRes, keysRes] = await Promise.all([
         api.get('/dashboard/stats'),
-        api.get('/submissions')
+        api.get('/submissions'),
+        api.get('/apikeys')
       ]);
       setStats(statsRes.data);
       setSubmissions(subsRes.data);
+      setApiKeys(keysRes.data);
     } catch (e) {
       toast.error('Failed to load data');
     } finally {
