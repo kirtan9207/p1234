@@ -745,6 +745,8 @@ async def startup():
     await db.submissions.create_index("status")
     await db.certificates.create_index("verification_id", unique=True)
     await db.certificates.create_index("id")
+    await db.api_keys.create_index("key_value", unique=True)
+    await db.api_keys.create_index("owner_id")
     logger.info("VHCCS API started")
 
 @app.on_event("shutdown")
