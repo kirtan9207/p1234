@@ -55,6 +55,10 @@ export default function CreatorDashboard() {
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
   const [form, setForm] = useState({ title: '', content_text: '', content_url: '' });
+  const [apiKeys, setApiKeys] = useState([]);
+  const [newKeyName, setNewKeyName] = useState('');
+  const [creatingKey, setCreatingKey] = useState(false);
+  const [revealedKeys, setRevealedKeys] = useState({});
 
   const fetchData = useCallback(async () => {
     try {
