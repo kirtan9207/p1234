@@ -15,7 +15,17 @@ export default function CertificatePage() {
   useEffect(() => {
     if (!verificationId) { setNotFound(true); setLoading(false); return; }
     api.get(`/verify/${verificationId}`)
-      .then(r => { setCert(r.data); setLoading(false); })
+      .then(async r => {
+        const verifyData = r.data;
+        // Also fetch full cert to get id for PDF
+        try {
+          const certsRes = await api.get(`/registry?search=${verificationId}&limit=50`);
+          const match = certsRes.data.certificates?.find(c => c.verification_id === verificationId);
+          if (match) verifyData.id = match.id;
+        } catch (_) {}
+        setCert(verifyData);
+        setLoading(false);
+      })
       .catch(() => { setNotFound(true); setLoading(false); });
   }, [verificationId]);
 
