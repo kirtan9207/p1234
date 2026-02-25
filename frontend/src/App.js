@@ -9,6 +9,7 @@ import CreatorDashboard from './pages/CreatorDashboard';
 import ReviewerPanel from './pages/ReviewerPanel';
 import PublicRegistry from './pages/PublicRegistry';
 import CertificatePage from './pages/CertificatePage';
+import AdminPanel from './pages/AdminPanel';
 import './App.css';
 
 function ProtectedRoute({ children, roles = [] }) {
@@ -29,6 +30,7 @@ function AppRoutes() {
         <Route path="/auth" element={user ? <Navigate to={user.role === 'reviewer' ? '/review' : '/dashboard'} replace /> : <AuthPage />} />
         <Route path="/dashboard" element={<ProtectedRoute roles={['creator', 'admin']}><CreatorDashboard /></ProtectedRoute>} />
         <Route path="/review" element={<ProtectedRoute roles={['reviewer', 'admin']}><ReviewerPanel /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute roles={['admin']}><AdminPanel /></ProtectedRoute>} />
         <Route path="/registry" element={<PublicRegistry />} />
         <Route path="/verify/:verificationId" element={<CertificatePage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
