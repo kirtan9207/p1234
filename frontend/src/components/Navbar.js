@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Shield, ChevronDown, LogOut, LayoutDashboard, ClipboardList, Globe, User, Menu, X } from 'lucide-react';
+import { Shield, ChevronDown, LogOut, LayoutDashboard, ClipboardList, Globe, User, Menu, X, Settings } from 'lucide-react';
 
 const trustColors = { high: 'bg-emerald-100 text-emerald-700', medium: 'bg-amber-100 text-amber-700', low: 'bg-rose-100 text-rose-700' };
 
@@ -40,6 +40,7 @@ export default function Navbar() {
             {navLink('/registry', 'Public Registry')}
             {user && user.role !== 'reviewer' && navLink('/dashboard', 'Dashboard')}
             {user && user.role !== 'creator' && navLink('/review', 'Review Panel')}
+            {user && user.role === 'admin' && navLink('/admin', 'Admin')}
           </div>
 
           <div className="hidden md:flex items-center gap-3">
