@@ -736,6 +736,8 @@ async def admin_stats(u=Depends(admin_only)):
         "api_keys_active": await db.api_keys.count_documents({"is_active": True}),
     }
 
+app.include_router(r)
+
 @app.on_event("startup")
     await db.users.create_index("id")
     await db.submissions.create_index("id")
