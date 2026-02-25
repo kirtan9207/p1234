@@ -290,7 +290,7 @@ def build_cert_pdf(cert: dict) -> bytes:
     slate = HexColor('#1e293b')
     muted = HexColor('#64748b')
 
-    title_style = ParagraphStyle('title', fontSize=26, textColor=indigo, alignment=TA_CENTER,
+    title_style = ParagraphStyle('title', fontSize=26, textColor=HexColor('#111827'), alignment=TA_CENTER,
                                   spaceAfter=4, fontName='Helvetica-Bold')
     sub_style = ParagraphStyle('sub', fontSize=12, textColor=muted, alignment=TA_CENTER, spaceAfter=6)
     label_style = ParagraphStyle('label', fontSize=8, textColor=muted, fontName='Helvetica-Bold',
@@ -303,9 +303,9 @@ def build_cert_pdf(cert: dict) -> bytes:
     is_active = cert.get('status') == 'active'
 
     elements = [
-        Paragraph("VHCCS", title_style),
-        Paragraph("Verified Human Content Certification System", sub_style),
-        HRFlowable(width="100%", thickness=2, color=indigo, spaceAfter=16),
+        Paragraph("TrustInk", title_style),
+        Paragraph("Verified Human Content Certification", sub_style),
+        HRFlowable(width="100%", thickness=2, color=HexColor('#111827'), spaceAfter=16),
         Spacer(1, 0.1*inch),
         Paragraph(f"{'Certificate of Authenticity' if is_active else 'REVOKED CERTIFICATE'}", ParagraphStyle(
             'cert_title', fontSize=20, textColor=emerald if is_active else HexColor('#ef4444'),
